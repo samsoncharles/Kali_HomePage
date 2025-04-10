@@ -24,8 +24,9 @@ A sleek purple-themed cybersecurity portal for penetration testers and security 
 1.  Clone the repository:
 
     ```bash
-    git clone [https://github.com/Samson235/kali-purple.git](https://github.com/Samson235/kali-purple.git)
-    cd kali-purple
+    git clone https://github.com/samsoncharles/Kali_HomePage.git
+    cd Kali_HomePage
+    #Rename your video to 3129957-uhd_3840_2160_25fps.mp4 and take it to assets/videos/
     python3 -m http.server 8080 --bind 0.0.0.0
     
     ```
