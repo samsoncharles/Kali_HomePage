@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kali Purple | Advanced Security Platform</title>
+    <style>
+        :root {
+            --primary-color: #8a2be2;
+            --secondary-color: #9932cc;
+            --accent-color: #ba55d3;
+            --dark-purple: #4b0082;
+            --light-purple: #e6e6fa;
+            --text-color: #f8f8ff;
+            --text-dark: #333;
+            --font-family: 'Courier New', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-family);
+        }
+
+        body {
+            color: var(--text-color);
+            overflow-x: hidden;
+            background-color: #000;
+            height: 100vh;
+        }
+
+        #video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.3;
+            filter: hue-rotate(270deg) contrast(1.5);
+        }
+
+        header {
+            position: relative;
+            padding: 20px 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            border-bottom: 1px solid var(--primary-color);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #logo {
+            display: block;
+            width: 150px;
+            height: 50px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 80"><path fill="%238a2be2" d="M224 0H16v80h208V0H64v40h16v4h128v-4H64v-16h160V0z"/><path fill="%23fff" d="M64 40h160v4H64z"/></svg>');
+            background-repeat: no-repeat;
+            background-size: contain;
+            text-indent: -9999px;
+            transition: transform 0.3s ease;
+        }
+
+        #logo:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 5px var(--primary-color));
+        }
+
+        #dragon-icon {
+            width: 80px;
+            height: 80px;
+            margin: 20px auto;
+            display: block;
+            filter: drop-shadow(0 0 5px var(--primary-color));
+            animation: float 3s ease-in-out infinite, pulse 2s ease infinite alternate;
+        }
+
+        #navigation {
+            display: flex;
+            list-style: none;
+        }
+
+        #navigation li {
+            position: relative;
+            margin-left: 20px;
+        }
+
+        #navigation li a, #navigation li span {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+        }
+
+        #navigation li a:hover, #navigation li span:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-3px);
+            text-shadow: 0 0 5px #fff;
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4);
+        }
+
+        .dropdown-menu > div {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(0, 0, 0, 0.9);
+            border-radius: 5px;
+            padding: 10px 0;
+            min-width: 200px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 100;
+            border: 1px solid var(--primary-color);
+        }
+
+        .dropdown-menu.active > div {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .dropdown-menu > div a {
+            display: block;
+            padding: 10px 20px;
+            color: var(--text-color);
+            transition: all 0.2s ease;
+            font-size: 0.85rem;
+        }
+
+        .dropdown-menu > div a:hover {
+            background-color: var(--primary-color);
+            padding-left: 25px;
+            color: #fff;
+        }
+
+        nav button {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        nav button div {
+            width: 25px;
+            height: 3px;
+            background-color: var(--text-color);
+            margin: 5px 0;
+            transition: all 0.3s ease;
+        }
+
+        #banner {
+            text-align: center;
+            padding: 80px 0 120px;
+            position: relative;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        #banner h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(to right, #8a2be2, #ba55d3);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: gradientShift 8s ease infinite;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        #banner p {
+            font-size: 1.5rem;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            opacity: 0.9;
+            text-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+        }
+
+        #searchbar {
+            --input-height: 50px;
+            position: relative;
+            width: 90%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        #searchbar input {
+            width: 100%;
+            height: var(--input-height);
+            border-radius: calc(var(--input-height)/2);
+            border: none;
+            padding: 0 50px 0 20px;
+            font-size: 16px;
+            line-height: 1.5;
+            color: var(--text-dark);
+            outline: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+            font-family: 'Courier New', monospace;
+        }
+
+        #searchbar input:focus {
+            box-shadow: 0 5px 20px rgba(138, 43, 226, 0.5);
+            background: #fff;
+        }
+
+        #searchbar i {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+            color: var(--primary-color);
+        }
+
+        .purple-glow {
+            animation: purpleGlow 2s ease infinite alternate;
+        }
+
+        /* Quick access icons */
+        #quick-access {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .access-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid var(--primary-color);
+            box-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+            position: relative;
+        }
+
+        .access-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.8);
+        }
+
+        .access-icon img {
+            width: 30px;
+            height: 30px;
+            filter: drop-shadow(0 0 2px var(--primary-color));
+        }
+
+        .access-tooltip {
+            position: absolute;
+            right: 60px;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 8px 15px;
+            border-radius: 5px;
+            color: white;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid var(--primary-color);
+            box-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+        }
+
+        .access-icon:hover .access-tooltip {
+            opacity: 1;
+            visibility: visible;
+            right: 70px;
+        }
+
+        /* Hacking animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes purpleGlow {
+            from { text-shadow: 0 0 5px #8a2be2, 0 0 10px #9932cc; }
+            to { text-shadow: 0 0 15px #8a2be2, 0 0 30px #ba55d3; }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes pulse {
+            0% { filter: drop-shadow(0 0 5px var(--primary-color)); }
+            100% { filter: drop-shadow(0 0 15px var(--accent-color)); }
+        }
+
+        @media (max-width: 768px) {
+            #navigation {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.9);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                transition: right 0.3s ease;
+                z-index: 99;
+                border-left: 1px solid var(--primary-color);
+            }
+
+            #navigation.active {
+                right: 0;
+            }
+
+            #navigation li {
+                margin: 15px 0;
+            }
+
+            .dropdown-menu > div {
+                position: static;
+                display: none;
+                background: transparent;
+                box-shadow: none;
+                padding: 0;
+                width: 100%;
+            }
+
+            .dropdown-menu.active > div {
+                display: block;
+            }
+
+            nav button {
+                display: block;
+                z-index: 100;
+            }
+
+            nav button.active div:nth-child(1) {
+                transform: rotate(-45deg) translate(-5px, 6px);
+            }
+
+            nav button.active div:nth-child(2) {
+                opacity: 0;
+            }
+
+            nav button.active div:nth-child(3) {
+                transform: rotate(45deg) translate(-5px, -6px);
+            }
+
+            #banner h1 {
+                font-size: 2.5rem;
+            }
+
+            #banner p {
+                font-size: 1.2rem;
+            }
+
+            #dragon-icon {
+                width: 60px;
+                height: 60px;
+            }
+
+            #quick-access {
+                flex-direction: row;
+                bottom: 10px;
+                right: 10px;
+                flex-wrap: wrap;
+                justify-content: flex-end;
+                width: calc(100% - 20px);
+            }
+
+            .access-icon {
+                width: 40px;
+                height: 40px;
+            }
+
+            .access-icon img {
+                width: 20px;
+                height: 20px;
+            }
+
+            .access-tooltip {
+                right: auto;
+                left: 50px;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+
+            .access-icon:hover .access-tooltip {
+                right: auto;
+                left: 60px;
+            }
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/themify-icons@1.0.1/css/themify-icons.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Video Background - Replace with your local path -->
+    <video autoplay muted loop id="video-background">
+        <source src="assets/videos/3129957-uhd_3840_2160_25fps.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
+
+    <header>
+        <nav class="container">
+            <a id="logo" href="https://www.kali.org/">Kali Purple</a>
+            
+            <ul id="navigation">
+                <li><a href="https://www.kali.org/get-kali/">Get Kali</a></li>
+                <li><a href="https://www.kali.org/blog/">Blog</a></li>
+                <li class="dropdown-menu">
+                    <span>Documentation <i class="ti-angle-down"></i></span>
+                    <div>
+                        <a href="https://www.kali.org/docs/">Documentation Pages</a>
+                        <a href="https://www.kali.org/tools/">Tools Documentation</a>
+                        <a href="https://www.kali.org/faq/">Frequently Asked Questions</a>
+                        <a href="https://bugs.kali.org/search.php?project_id=1&category_id[]=General%20Bug&category_id[]=Kali%20Package%20Bug&category_id[]=Kali%20Package%20Improvement&status[]=30&status[]=40&status[]=50&sticky=on&sort=id%2Clast_updated&dir=DESC%2CDESC&hide_status=-2&match_type=0">Known Issues</a>
+                    </div>
+                </li>
+                <li class="dropdown-menu">
+                    <span>Community <i class="ti-angle-down"></i></span>
+                    <div>
+                        <a href="https://www.kali.org/community/">Community Support</a>
+                        <a href="https://forums.kali.org/">Forums</a>
+                        <a href="https://discord.kali.org/">Discord</a>
+                        <a href="https://www.kali.org/newsletter/">Join Newsletter</a>
+                        <a href="https://http.kali.org/README?mirrorlist">Mirror Location</a>
+                        <a href="https://www.kali.org/docs/community/contribute/">Get Involved</a>
+                    </div>
+                </li>
+                <li class="dropdown-menu">
+                    <span>Tools <i class="ti-angle-down"></i></span>
+                    <div>
+                        <a href="https://www.youtube.com" target="_blank">YouTube</a>
+                        <a href="https://www.google.com" target="_blank">Google</a>
+                        <a href="https://www.aperisolve.com" target="_blank">AperiSolve</a>
+                        <a href="https://cyberchef.org" target="_blank">CyberChef</a>
+                        <a href="https://www.virustotal.com" target="_blank">VirusTotal</a>
+                        <a href="https://www.shodan.io" target="_blank">Shodan</a>
+                        <a href="https://crt.sh" target="_blank">crt.sh</a>
+                        <a href="https://www.hybrid-analysis.com" target="_blank">Hybrid Analysis</a>
+                    </div>
+                </li>
+                <li class="dropdown-menu">
+                    <span>About <i class="ti-angle-down"></i></span>
+                    <div>
+                        <a href="https://www.kali.org/features/">Kali Linux Overview</a>
+                        <a href="https://gitlab.com/kalilinux/documentation/press-pack/-/archive/main/press-pack-main.zip">Press Pack</a>
+                        <a href="https://www.kali.org/wallpapers">Wallpapers</a>
+                        <a href="https://offsec.usa.dowlis.com/kali/view-all.html">Kali Swag Store</a>
+                        <a href="https://www.kali.org/about-us/">Meet The Kali Team</a>
+                        <a href="https://www.kali.org/partnerships/">Partnerships</a>
+                        <a href="https://www.kali.org/contact/">Contact Us</a>
+                    </div>
+                </li>
+            </ul>
+            
+            <button title="show menu">
+                <div></div>
+                <div></div>
+                <div></div>
+            </button>
+        </nav>
+    </header>
+
+    <div class="container" id="banner">
+        <h1 class="purple-glow">Kali Purple</h1>
+        <svg id="dragon-icon" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+            <path fill="%238a2be2" d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256 256-114.6 256-256S397.4 0 256 0zm0 464c-114.7 0-208-93.3-208-208S141.3 48 256 48s208 93.3 208 208-93.3 208-208 208zm96-328c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zm-192 0c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zm194.4 165.7c-10.6-6.2-23.7-7.5-35.4-3.5-11.7 4-20.9 12.9-25.9 24.1-12.5 28.2-41.3 46.6-72.9 44.6-31.6-2-58.3-23.8-67.4-54.4-2.8-9.3-9.3-17.1-18.1-21.6-8.8-4.5-19-5.6-28.4-2.9-18.6 5.4-30.3 23.8-28.5 42.9 1.8 19.1 16.3 34.6 35.4 36.4 1.2.1 2.4.2 3.6.2 17.7 0 33.3-12.1 37.8-29.5 6.4 26.8 30.2 46.4 57.8 47.8 27.6 1.4 53.5-16.1 62.7-42.2 5.9 23.3 27.5 40.1 52.1 40.1 3.1 0 6.2-.3 9.3-.8 29.4-5.5 50.5-32.1 47.6-62.1-2.4-25.5-21.6-46.1-46.4-50.7z"/>
+        </svg>
+        <p>The most advanced penetration testing platform, now with a sleek purple theme</p>
+        <div id="searchbar">
+            <form action="https://www.google.com/search" method="get" target="_blank">
+                <input type="text" name="q" placeholder="Search securely..." autocomplete="off" autofocus>
+                <i class="ti-search"></i>
+            </form>
+        </div>
+    </div>
+
+    <!-- Quick access icons -->
+    <div id="quick-access">
+        <a href="https://www.youtube.com" target="_blank" class="access-icon">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iIzhhMmJlMiIgZD0iTTEwLDE2LjVMMTYuNSwxMkwxMCw3LjVWMTAuMkwzLDEydjBsNy0xLjhWMTYuNU0xMiwyQTExLDExIDAgMCwwIDEsMTNBMTEsMTEgMCAwLDAgMTIsMjRBMTEsMTEgMCAwLDAgMjMsMTNBMTEsMTEgMCAwLDAgMTIsMloiIC8+PC9zdmc+" alt="YouTube">
+            <span class="access-tooltip">YouTube</span>
+        </a>
+        
+        <a href="https://chat.openai.com" target="_blank" class="access-icon">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iIzhhMmJlMiIgZD0iTTEyLDJBMTAsMTAgMCAwLDAgMiwxMkExMCwxMCAwIDAsMCAxMiwyMkExMCwxMCAwIDAsMCAyMiwxMkExMCwxMCAwIDAsMCAxMiwyTTksMTVIMTFWN0g5VjE1TTEzLDdWMTVIMTVWN0gxM1oiIC8+PC9zdmc+" alt="ChatGPT">
+            <span class="access-tooltip">ChatGPT</span>
+        </a>
+        
+        <a href="https://www.google.com" target="_blank" class="access-icon">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iIzhhMmJlMiIgZD0iTTEyLDJBMTAsMTAgMCAwLDAgMiwxMkExMCwxMCAwIDAsMCAxMiwyMkExMCwxMCAwIDAsMCAyMiwxMkExMCwxMCAwIDAsMCAxMiwyTTExLDE3SDYuOFY3SDEzQzE1LjUsNyAxNyw4LjUgMTcsMTFDMTcsMTMuNSAxNS41LDE1IDEzLDE1SDEyVjEzSDEzQzEzLjgsMTMgMTQuNSwxMi4zIDE0LjUsMTEuNUMxNC41LDEwLjcgMTMuOCwxMCAxMywxMEgxMVYxN00xMiwxM0gxMVYxMUgxMlYxM1oiIC8+PC9zdmc+" alt="Google">
+            <span class="access-tooltip">Google</span>
+        </a>
+        
+        <a href="https://www.aperisolve.com" target="_blank" class="access-icon">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iIzhhMmJlMiIgZD0iTTEyLDJBMTAsMTAgMCAwLDAgMiwxMkExMCwxMCAwIDAsMCAxMiwyMkExMCwxMCAwIDAsMCAyMiwxMkExMCwxMCAwIDAsMCAxMiwyTTksMTVIMTFWN0g5VjE1TTEzLDdWMTVIMTVWN0gxM1oiIC8+PC9zdmc+" alt="AperiSolve">
+            <span class="access-tooltip">AperiSolve</span>
+        </a>
+        
+        <a href="https://cyberchef.org" target="_blank" class="access-icon">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iIzhhMmJlMiIgZD0iTTEyLDJBMTAsMTAgMCAwLDAgMiwxMkExMCwxMCAwIDAsMCAxMiwyMkExMCwxMCAwIDAsMCAyMiwxMkExMCwxMCAwIDAsMCAxMiwyTTksMTVIMTFWN0g5VjE1TTEzLDdWMTVIMTVWN0gxM1oiIC8+PC9zdmc+" alt="CyberChef">
+            <span class="access-tooltip">CyberChef</span>
+        </a>
+        
+        <a href="http://localhost" target="_blank" class="access-icon">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iIzhhMmJlMiIgZD0iTTEyLDJBMTAsMTAgMCAwLDAgMiwxMkExMCwxMCAwIDAsMCAxMiwyMkExMCwxMCAwIDAsMCAyMiwxMkExMCwxMCAwIDAsMCAxMiwyTTksOEgxMVYxNkg5VjhNMTUsOEgxN1YxNkgxNVY4WiIgLz48L3N2Zz4=" alt="Localhost">
+            <span class="access-tooltip">Localhost</span>
+        </a>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        const menuBtn = document.querySelector('nav button');
+        const navigation = document.getElementById('navigation');
+        
+        menuBtn.addEventListener('click', () => {
+            menuBtn.classList.toggle('active');
+            navigation.classList.toggle('active');
+        });
+
+        // Dropdown menu toggle
+        document.querySelectorAll('.dropdown-menu').forEach(menu => {
+            const span = menu.querySelector('span');
+            
+            // For mobile
+            span.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    menu.classList.toggle('active');
+                }
+            });
+            
+            // For desktop
+            menu.addEventListener('mouseenter', () => {
+                if (window.innerWidth > 768) {
+                    menu.classList.add('active');
+                }
+            });
+            
+            menu.addEventListener('mouseleave', () => {
+                if (window.innerWidth > 768) {
+                    menu.classList.remove('active');
+                }
+            });
+        });
+
+        // Handle internal links
+        document.addEventListener("click", ({target:e}) => {
+            let t = e;
+            for (; t && t.tagName !== "A";) t = t.parentElement;
+            if (t && !t.hash && t.host === window.location.host && !t.pathname.includes(".")) {
+                t.href += (t.href.endsWith("/") ? "" : "/") + "index.html";
+            }
+        }, true);
+
+        // Animate elements on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('#banner h1, #banner p, #searchbar').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Resize handler
+        window.addEventListener('resize', () => {
+            // Close all dropdowns when switching to desktop view
+            if (window.innerWidth > 768) {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.classList.remove('active');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
