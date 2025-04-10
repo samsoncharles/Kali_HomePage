@@ -47,6 +47,7 @@ A sleek purple-themed cybersecurity portal for penetration testers and security 
 
 -   [](https://github.com/Samson235)
     **Email:** pmagembe235@gmail.com
+- **whatsapp:** https://wa.me/255710008454
     
 
 ## Badges
