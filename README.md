@@ -1,7 +1,5 @@
 # Kali Purple Home Dashboard
 
-![Kali Purple Screenshot](screenshot.png)
-
 A sleek purple-themed cybersecurity portal for penetration testers and security researchers, featuring quick access to essential tools and discreet search functionality.
 
 ## Features
