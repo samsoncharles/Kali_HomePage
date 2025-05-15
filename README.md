@@ -24,24 +24,20 @@ A sleek purple-themed cybersecurity portal for penetration testers and security 
 1.  Clone the repository:
 
     ```bash
-    git clone https://github.com/samsoncharles/Kali_HomePage.git
-    cd Kali_HomePage
-    #Rename your video to 3129957-uhd_3840_2160_25fps.mp4 and take it to assets/videos/
-    python3 -m http.server 8080 --bind 0.0.0.0
+    sudo git clone https://github.com/samsoncharles/Kali_HomePage.git
+    sudo cp -r Kali_HomePage/* /usr/share/kali-defaults/web/
     
     ```
 
 `
 
-2.  Open `localhost:8080` in your computers browser
-3.  `<your_IP:8080>` in your other device
+
 
 
 
 ## Screenshots
 
-<a href='https://postimg.cc/G4VG72Ks' target='_blank'><img src='https://i.postimg.cc/zfX7fHRp/image.png' border='0' alt='image'/></a>
-<a href='https://postimg.cc/Y41NvFKz' target='_blank'><img src='https://i.postimg.cc/8CYZndZ9/Screenshot-20250410-224054-Chrome.jpg' border='0' alt='Screenshot-20250410-224054-Chrome'/></a>
+<a href='https://postimg.cc/G4VG72Ks' target='_blank'><img src='https://i.imgur.com/JVpW0lM.png' border='0' alt='image'/></a></a>
 
 ## Authors
 
